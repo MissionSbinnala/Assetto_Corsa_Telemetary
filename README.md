@@ -1,6 +1,8 @@
 # Assetto_Corsa_Telemetary
 This a basic Telemetary logger, for those who needs data recorded to analyse each stint.
-# Still in early access, Currently only for Concept validation. Most stuffs will be changed!
+
+# Still in early access! 
+Currently only for Concept validation. Most stuffs will be changed!
 
 # Components
 There're two components in this project. The python app is a normal app of Assetto Corsa. The other one is a dedicated app that displays all the info in chart and give a opportunity to compare all the data.
