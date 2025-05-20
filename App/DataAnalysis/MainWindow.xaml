@@ -23,7 +23,18 @@
             />
         <DockPanel x:Name="dockPanel" Grid.Column="1" LastChildFill="False" VerticalAlignment="Top" HorizontalAlignment="Left" Width="{Binding ActualWidth, ElementName=dockPanel, Mode=OneWay}"/>
         <DockPanel x:Name="dockPanel1" Grid.Column="1" LastChildFill="False">
-            <Grid Width="100"/>
+            <Grid x:Name="grid1" Width="{Binding ActualWidth, ElementName=dockPanel1, Mode=OneWay}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button x:Name="LoadButton" Content="Load File" Grid.Column="0" Grid.Row="0" Click="OnClick" Margin="2,2,2,2"/>
+                <Button x:Name="SaveButton" Content="Save File" Grid.Column="1" Grid.Row="0" Click="OnClick" Margin="2,2,2,2"/>
+            </Grid>
 
         </DockPanel>
         <Canvas Grid.Row="1"  IsHitTestVisible="True">
