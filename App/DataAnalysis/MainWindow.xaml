@@ -1,0 +1,36 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+        xmlns:WpfApp1="clr-namespace:WpfApp1" x:Class="FluentChartApp.MainWindow"
+        Title="轮胎磨损分析" Height="450" Width="800" Topmost="True">
+    <!-- WindowStyle="None" AllowsTransparency="True" Background="Transparent" Topmost="True"-->
+    <Grid x:Name="grid">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <lvc:CartesianChart Grid.Column="0" Series="{Binding Collection.AllCurves}" Sections="{Binding LapRange}"
+            x:Name="MyChart"
+            XAxes="{Binding XAxes}"
+            YAxes="{Binding YAxes}"
+            MouseDown="Chart_MouseDown"
+            MouseUp="Chart_MouseUp"   
+            />
+        <DockPanel x:Name="dockPanel" Grid.Column="1" LastChildFill="False" VerticalAlignment="Top" HorizontalAlignment="Left" Width="{Binding ActualWidth, ElementName=dockPanel, Mode=OneWay}"/>
+        <DockPanel x:Name="dockPanel1" Grid.Column="1" LastChildFill="False">
+            <Grid Width="100"/>
+
+        </DockPanel>
+        <Canvas Grid.Row="1"  IsHitTestVisible="True">
+            <!--<Border x:Name="MyDragArea" BorderBrush="Black" BorderThickness="1" Height="217" Width="400" HorizontalAlignment="Center" VerticalAlignment="Top" />-->
+            <!--Background="#01FFFFFF"  MouseLeftButtonDown="DragArea_MouseLeftButtonDown" MouseEnter="DragArea_MouseEnter" MouseLeave="DragArea_MouseLeave"-->
+        </Canvas>
+        <WpfApp1:CurveSelectWidget x:Name="CurveSelectWidget" Grid.Column="1" Grid.Row="1" MinHeight="100" MinWidth="100" Background="AliceBlue"/>
+
+    </Grid>
+</Window>
