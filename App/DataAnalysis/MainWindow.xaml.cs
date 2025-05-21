@@ -163,7 +163,7 @@ MouseLeave="DragArea_MouseLeave"*/
 
         int i = 0;
 
-        void OnClick(object sender, RoutedEventArgs e)
+        void SaveFile(object sender, RoutedEventArgs e)
         {
             MainViewModel? a = DataContext as MainViewModel;
             var dialog = new Microsoft.Win32.SaveFileDialog
@@ -178,37 +178,21 @@ MouseLeave="DragArea_MouseLeave"*/
                 a?.ExportChartDataToCsv(dialog.FileName);
                 MessageBox.Show("导出成功！");
             }
-            /*var dialog = new Microsoft.Win32.SaveFileDialog
-            {
-                Filter = "CSV 文件 (*.csv)|*.csv",
-                FileName = "chart_data.csv"
-            };
-            
-            if (dialog.ShowDialog() == true)
-            {
-
-                a?.ExportChartDataToCsv(dialog.FileName);
-                MessageBox.Show("导出成功！");
-            }
-            switch (i)
-            {
-                case 0:
-                    a?.curveGroups.AddCurve("FL", CurveFactory.CreateNewCurve("TempFL"));
-                    break;
-                case 1:
-                    a?.curveGroups.AddCurve("FR", CurveFactory.CreateNewCurve("TempFR"));
-                    break;
-                case 2:
-                    a?.curveGroups.AddCurve("RL", CurveFactory.CreateNewCurve("TempRL"));
-                    break;
-                case 3:
-                    a?.curveGroups.AddCurve("RR", CurveFactory.CreateNewCurve("TempRR"));
-                    break;
-            }*/
-            i++;
-            i %= 4;
         }
 
+        public void LoadFile(object sender, RoutedEventArgs e)
+        {
+            MainViewModel? a = DataContext as MainViewModel;
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "CSV 文件 (*.csv)|*.csv",
+                CheckFileExists = true,
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                a?.ImportChartDataFromCsv(dialog.FileName);
+            }
+        }
 
         private void Chart_MouseDown(object sender, MouseButtonEventArgs e)
         {

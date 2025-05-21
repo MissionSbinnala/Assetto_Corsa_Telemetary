@@ -32,8 +32,8 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Button x:Name="LoadButton" Content="Load File" Grid.Column="0" Grid.Row="0" Click="OnClick" Margin="2,2,2,2"/>
-                <Button x:Name="SaveButton" Content="Save File" Grid.Column="1" Grid.Row="0" Click="OnClick" Margin="2,2,2,2"/>
+                <Button x:Name="LoadButton" Content="Load File" Grid.Column="0" Grid.Row="0" Click="LoadFile" Margin="2,2,2,2"/>
+                <Button x:Name="SaveButton" Content="Save File" Grid.Column="1" Grid.Row="0" Click="SaveFile" Margin="2,2,2,2"/>
             </Grid>
 
         </DockPanel>

@@ -68,18 +68,14 @@ namespace FluentChartApp.Data
         {
             StartDistance = startDistance;
             RecordDistance = ((int)startDistance / 10) * 10;
-            Curves.Add(new CurveData("FL"));
-            Curves.Add(new CurveData("FR"));
-            Curves.Add(new CurveData("RL"));
-            Curves.Add(new CurveData("RR"));
-            Curves.Add(new CurveData("Fuel"));
-            Curves.Add(new CurveData("Speed"));
+            InitializeCurves();
         }
-        public Stint(string[] data, out int remain)
+
+        public Stint(string[] data, out int remain, int i = 0)
         {
             StartDistance = double.Parse(data[1]);
             RecordDistance = (int)StartDistance / 10 * 10;
-            int i = 2;
+            i += 2;
             while (data[i] != "Laps Ends")
             {
                 Laps.Add(new LapData(data[i]));
@@ -88,12 +84,13 @@ namespace FluentChartApp.Data
             i += 2;
             var points = data.Skip(i);
             int delta = 1;
+            InitializeCurves();
             foreach (var point in points)
             {
                 if (point == "Stint Ends") break;
                 var y = point.Split(',');
                 LapPercentage.Add(double.Parse(y[0]));
-                for (int j = 1; j < 7; j++) Curves[i].AddPoint(RecordDistance + 10 * delta, double.Parse(y[j]));
+                for (int j = 1; j < 7; j++) Curves[j - 1].AddPoint(RecordDistance + 10 * delta, double.Parse(y[j]));
                 delta++;
             }
             if (data.Length >= i + delta) remain = i + delta - 1;
@@ -136,6 +133,16 @@ namespace FluentChartApp.Data
             }
             CSV.Add("Stint Ends");
             return CSV;
+        }
+
+        private void InitializeCurves()
+        {
+            Curves.Add(new CurveData("FL"));
+            Curves.Add(new CurveData("FR"));
+            Curves.Add(new CurveData("RL"));
+            Curves.Add(new CurveData("RR"));
+            Curves.Add(new CurveData("Fuel"));
+            Curves.Add(new CurveData("Speed"));
         }
     }
 

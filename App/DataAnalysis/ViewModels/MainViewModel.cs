@@ -19,13 +19,9 @@ namespace FluentChartApp.ViewModels
     public class MainViewModel
     {
         public CurveCollection Collection { get; } = new();
-        public ObservableCollection<RectangularSection> LapRange { get; set; }
+        public ObservableCollection<RectangularSection> LapRange { get; set; } = [];
 
-        public MainViewModel()
-        {
-            LapRange = new ObservableCollection<RectangularSection>();
-            ImportChartDataFromCsv("A");
-        }
+        public MainViewModel() { }
 
         public void AddPoint(TickData tick)
         {
@@ -49,14 +45,17 @@ namespace FluentChartApp.ViewModels
 
         public void ImportChartDataFromCsv(string filePath)
         {
-            var FL = CurveFactory.CreateNewCurve("RecordedFL");
+            var data=File.ReadAllLines(filePath);
+            Collection.AddStint(new Stint(data, out _));
+
+            /*var FL = CurveFactory.CreateNewCurve("RecordedFL");
             var FR = CurveFactory.CreateNewCurve("RecordedFR");
             var RL = CurveFactory.CreateNewCurve("RecordedRL");
             var RR = CurveFactory.CreateNewCurve("RecordedRR");
             filePath = "C:\\Users\\76292\\Desktop\\chart_data1.csv";
             var lines = File.ReadAllLines(filePath);
 
-            /*foreach (var line in lines.Skip(1)) // 跳过表头
+            foreach (var line in lines.Skip(1)) // 跳过表头
             {
                 var parts = line.Split(',');
 
@@ -73,7 +72,7 @@ namespace FluentChartApp.ViewModels
                     (RL.Values as ObservableCollection<ObservablePoint>)?.Add(new ObservablePoint(x, y3));
                     (RR.Values as ObservableCollection<ObservablePoint>)?.Add(new ObservablePoint(x, y4));
                 }
-            }*/
+            }
 
 
 
@@ -96,7 +95,7 @@ namespace FluentChartApp.ViewModels
                 }
             }
 
-            //collection.AddStint(new Stint(0));
+            //collection.AddStint(new Stint(0));*/
         }
 
         public void ExportChartDataToCsv(string filePath)
