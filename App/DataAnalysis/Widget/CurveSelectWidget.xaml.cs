@@ -1,8 +1,10 @@
-﻿using FluentChartApp.ViewModels;
+﻿using FluentChartApp;
+using FluentChartApp.ViewModels;
 using LiveChartsCore.Painting;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,10 +27,9 @@ namespace WpfApp1
     {
         public CurveSelectWidget()
         {
+            DataContext = MainWindow.viewModel;
             InitializeComponent();
         }
-
-        public void AddDataContext(object obj) => DataContext = obj;
     }
 }
 

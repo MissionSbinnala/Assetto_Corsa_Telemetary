@@ -13,6 +13,7 @@ using LiveChartsCore.Painting;
 using FluentChartApp.Tool;
 using System.Windows.Shapes;
 using FluentChartApp.Data;
+using System.ComponentModel;
 
 namespace FluentChartApp.ViewModels
 {
@@ -22,6 +23,26 @@ namespace FluentChartApp.ViewModels
         public ObservableCollection<RectangularSection> LapRange { get; set; } = [];
 
         public MainViewModel() { }
+
+        public ObservableCollection<Axis> XAxes { get; set; } = [new Axis
+        {
+            Name="Lap",
+            MinLimit = 0,
+        }];
+        public ObservableCollection<Axis> YAxes { get; set; } = [new Axis
+        {
+            MaxLimit = 100,
+        },new Axis{
+            Position = LiveChartsCore.Measure.AxisPosition.End,
+        }];
+        public void Change(bool visible)
+        {
+            YAxes[1].IsVisible = visible;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string name) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
         public void AddPoint(TickData tick)
         {
@@ -45,7 +66,7 @@ namespace FluentChartApp.ViewModels
 
         public void ImportChartDataFromCsv(string filePath)
         {
-            var data=File.ReadAllLines(filePath);
+            var data = File.ReadAllLines(filePath);
             Collection.AddStint(new Stint(data, out _));
 
             /*var FL = CurveFactory.CreateNewCurve("RecordedFL");

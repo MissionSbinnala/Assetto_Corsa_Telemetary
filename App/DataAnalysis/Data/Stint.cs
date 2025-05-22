@@ -1,6 +1,7 @@
 ﻿using FluentChartApp.Tool;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Text.Json.Serialization;
+using System.Windows.Media;
 
 namespace FluentChartApp.Data
 {
@@ -61,7 +63,6 @@ namespace FluentChartApp.Data
         public int RecordDistance { get; }
         int i = 0;
         public ObservableCollection<CurveData> Curves { get; } = [];
-        public List<double> LapPercentage { get; set; } = [];
         List<LapData> Laps { get; set; } = [];
         public Stint() { }
         public Stint(double startDistance) //Primary
@@ -83,25 +84,22 @@ namespace FluentChartApp.Data
             }
             i += 2;
             var points = data.Skip(i);
-            int delta = 1;
             InitializeCurves();
             foreach (var point in points)
             {
                 if (point == "Stint Ends") break;
                 var y = point.Split(',');
-                LapPercentage.Add(double.Parse(y[0]));
-                for (int j = 1; j < 7; j++) Curves[j - 1].AddPoint(RecordDistance + 10 * delta, double.Parse(y[j]));
-                delta++;
+                for (int j = 1; j < 7; j++) Curves[j - 1].AddPoint(double.Parse(y[0]), double.Parse(y[j]));
+                i++;
             }
-            if (data.Length >= i + delta) remain = i + delta - 1;
+            if (data.Length > i) remain = i;
             else remain = -1;
         }
 
         public void AddPoint(TickData tick)
         {
-            double x = RecordDistance + 10 * i;
+            double x = tick.Lap.Round(4);
 
-            LapPercentage.Add(tick.Lap.Round(4));
             Curves[0].AddPoint(x, tick.TyreWear[0].Round(4));
             Curves[1].AddPoint(x, tick.TyreWear[1].Round(4));
             Curves[2].AddPoint(x, tick.TyreWear[2].Round(4));
@@ -112,7 +110,7 @@ namespace FluentChartApp.Data
             i++;
         }
 
-        public string GetY(int i) => $"{Curves[0].GetY(i)},{Curves[1].GetY(i)},{Curves[2].GetY(i)},{Curves[3].GetY(i)},{Curves[4].GetY(i)},{Curves[5].GetY(i)}";
+        public string GetData(int i) => $"{Curves[0].GetX(i)},{Curves[0].GetY(i)},{Curves[1].GetY(i)},{Curves[2].GetY(i)},{Curves[3].GetY(i)},{Curves[4].GetY(i)},{Curves[5].GetY(i)}";
 
         public void AddLap(LapData lap) => Laps.Add(lap);
 
@@ -129,7 +127,7 @@ namespace FluentChartApp.Data
             {
                 distance += 10;
 
-                CSV.Add($"{LapPercentage[j]},{GetY(j)}");
+                CSV.Add($"{GetData(j)}");
             }
             CSV.Add("Stint Ends");
             return CSV;
@@ -142,7 +140,7 @@ namespace FluentChartApp.Data
             Curves.Add(new CurveData("RL"));
             Curves.Add(new CurveData("RR"));
             Curves.Add(new CurveData("Fuel"));
-            Curves.Add(new CurveData("Speed"));
+            Curves.Add(new CurveData("Speed", 1));
         }
     }
 
@@ -164,6 +162,7 @@ namespace FluentChartApp.Data
                     foreach (var curve in Curves)
                         curve.Curve.IsVisible = value;
 
+                    MainWindow.viewModel.Change(value);
                     OnPropertyChanged(nameof(IsVisible));
                     VisibilityChanged?.Invoke(this, EventArgs.Empty);
                 }
@@ -180,6 +179,29 @@ namespace FluentChartApp.Data
         public CurveGroup(string name) { GroupName = name; }
         public void AddCurve(CurveData curve) => Curves.Add(curve);
         public void RemoveCurve(CurveData curve) => Curves.Remove(curve);
+    }
+
+    public class CurveData
+    {
+        public LineSeries<ObservablePoint> Curve { get; set; }
+        public Brush StrokeBrush
+        {
+            get
+            {
+                // 下面假设你用的是 SolidColorPaint
+                if (Curve.Stroke is SolidColorPaint solidColor)
+                {
+                    var color = solidColor.Color;
+                    return new SolidColorBrush(Color.FromArgb(color.Alpha, color.Red, color.Green, color.Blue));
+                }
+                return Brushes.Transparent;
+            }
+        }
+        public CurveData(LineSeries<ObservablePoint> curve) => Curve = curve;
+        public CurveData(string name, int axis = 0) => Curve = CurveFactory.CreateNewCurve(name, axis);
+        public void AddPoint(double x, double y) => (Curve.Values as ObservableCollection<ObservablePoint>)?.Add(new ObservablePoint(x, y));
+        public double GetX(int i) => (Curve.Values as ObservableCollection<ObservablePoint>)?[i].X ?? 0;
+        public double GetY(int i) => (Curve.Values as ObservableCollection<ObservablePoint>)?[i].Y ?? 0;
     }
 
 

@@ -19,6 +19,8 @@ namespace FluentChartApp
 {
     public partial class MainWindow : Window
     {
+        public static MainViewModel viewModel { get; set; } = new MainViewModel();
+
         const int GWL_EXSTYLE = -20;
         const int WS_EX_TRANSPARENT = 0x00000020;
         const int WS_EX_LAYERED = 0x00080000;
@@ -47,10 +49,9 @@ namespace FluentChartApp
 
         public MainWindow()
         {
-            InitializeComponent();
-            DataContext = new MainViewModel();
+            DataContext = viewModel;
 
-            CurveSelectWidget.AddDataContext(DataContext);
+            InitializeComponent();
 
             DataDispatcher.Register();
             receiver = new UdpReceiver();

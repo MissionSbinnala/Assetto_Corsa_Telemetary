@@ -24,7 +24,7 @@ namespace FluentChartApp.Tool
             SKColors.Cyan,
             SKColors.Magenta,
             SKColors.Yellow,
-            SKColors.Orchid, 
+            SKColors.Orchid,
             SKColors.Purple,
             SKColors.Aqua,
             SKColors.Aquamarine,
@@ -34,7 +34,7 @@ namespace FluentChartApp.Tool
         };
         private static int colorIndex = 0;
 
-        public static LineSeries<ObservablePoint> CreateNewCurve(string name)
+        public static LineSeries<ObservablePoint> CreateNewCurve(string name, int axis = 0)
         {
             var strokeColor = ColorPalette[colorIndex % ColorPalette.Length];
             colorIndex++; // 循环使用颜色列表
@@ -47,7 +47,8 @@ namespace FluentChartApp.Tool
                 //Fill = null, // 可选：不使用填充
                 GeometrySize = 0,
                 YToolTipLabelFormatter = point => $"{point.Coordinate}",
-                Tag= name.Split("-")[0],
+                Tag = name.Split("-")[0],
+                ScalesYAt = axis,
             };
         }
 
