@@ -77,7 +77,7 @@ namespace FluentChartApp.Data
             StartDistance = double.Parse(data[1]);
             RecordDistance = (int)StartDistance / 10 * 10;
             i += 2;
-            while (data[i] != "Laps Ends")
+            while (data[i].Split(',')[0] != "Laps Ends")
             {
                 Laps.Add(new LapData(data[i]));
                 i++;
@@ -87,7 +87,7 @@ namespace FluentChartApp.Data
             InitializeCurves();
             foreach (var point in points)
             {
-                if (point == "Stint Ends") break;
+                if (point.Split(',')[0] == "Stint Ends") break;
                 var y = point.Split(',');
                 for (int j = 1; j < 7; j++) Curves[j - 1].AddPoint(double.Parse(y[0]), double.Parse(y[j]));
                 i++;
