@@ -52,6 +52,7 @@ namespace FluentChartApp
             DataContext = viewModel;
 
             InitializeComponent();
+            viewModel.chart = MyChart;
 
             DataDispatcher.Register();
             receiver = new UdpReceiver();
@@ -135,7 +136,6 @@ MouseLeave="DragArea_MouseLeave"*/
 
 
 
-        bool First=true;
 
         void HandleUdpData(string msg)
         {
@@ -143,16 +143,14 @@ MouseLeave="DragArea_MouseLeave"*/
             if (data == null) { return; }
             FluentChartApp.App.Current.Dispatcher.Invoke(() =>
             {
-                MainViewModel? a = DataContext as MainViewModel;
                 switch (data)
                 {
                     case TickData tick:
-                        if (First && tick.Lap < 0.2) First = false;
-                        if (First) tick.Lap -= 1;
-                        a?.AddPoint(tick);
+                        viewModel.AddPoint(tick);
+                        viewModel.LiveXAxis(tick);
                         break;
                     case LapData lap:
-                        a?.AddRange(lap);
+                        viewModel.AddRange(lap);
                         break;
                     case PitData pit:
                         
