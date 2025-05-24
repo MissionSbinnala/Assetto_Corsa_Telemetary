@@ -14,6 +14,7 @@ using FluentChartApp.Tool;
 using System.Windows.Shapes;
 using FluentChartApp.Data;
 using System.ComponentModel;
+using LiveChartsCore.SkiaSharpView.WPF;
 
 namespace FluentChartApp.ViewModels
 {
@@ -23,6 +24,7 @@ namespace FluentChartApp.ViewModels
         public ObservableCollection<RectangularSection> LapRange { get; set; } = [];
 
         public MainViewModel() { }
+        public CartesianChart chart;
 
         public ObservableCollection<Axis> XAxes { get; set; } = [new Axis
         {
@@ -43,6 +45,32 @@ namespace FluentChartApp.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+        private bool _live = false;
+        public bool Live
+        {
+            get => _live;
+            set
+            {
+                _live = value;
+                var points = Collection.CurrentStint?.Curves[0].Curve.Values as ObservableCollection<ObservablePoint>;
+                if (!value) XAxes[0].MaxLimit = null;
+                else if (points?.Count == 0 || points?[points?.Count - 1 ?? 0].X < 2) XAxes[0].MaxLimit = 2;
+                else
+                {
+                    XAxes[0].MinLimit = points?[points?.Count - 1 ?? 0].X - 1;
+                    XAxes[0].MaxLimit = points?[points?.Count - 1 ?? 0].X + 1;
+                }
+            }
+        }
+        public void LiveXAxis(TickData tick)
+        {
+            if (Live && tick.Lap > 1)
+            {
+                XAxes[0].MaxLimit = tick.Lap + 1;
+                XAxes[0].MinLimit = tick.Lap - 1;
+            }
+        }
 
         public void AddPoint(TickData tick)
         {

@@ -34,6 +34,8 @@
                 </Grid.RowDefinitions>
                 <Button x:Name="LoadButton" Content="Load File" Grid.Column="0" Grid.Row="0" Click="LoadFile" Margin="2,2,2,2"/>
                 <Button x:Name="SaveButton" Content="Save File" Grid.Column="1" Grid.Row="0" Click="SaveFile" Margin="2,2,2,2"/>
+                <CheckBox Content="Live" Grid.Row="1" VerticalAlignment="Center" VerticalContentAlignment="Center" Background="{x:Null}" HorizontalAlignment="Center" IsChecked="{Binding Live, Mode=TwoWay}"/>
+
             </Grid>
 
         </DockPanel>
