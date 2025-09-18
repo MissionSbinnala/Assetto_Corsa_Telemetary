@@ -62,5 +62,5 @@
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
 
-/Python App/idna/** linguist-vendored
-/Python App/third_party/** linguist-vendored
+/PythonApp/idna/** linguist-vendored
+/PythonApp/third_party/** linguist-vendored
