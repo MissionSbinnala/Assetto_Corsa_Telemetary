@@ -1,0 +1,102 @@
+﻿<Window x:Class="Telemetry.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
+        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        x:Name="MW"
+        
+        xmlns:local="clr-namespace:Telemetry"
+        xmlns:vw="clr-namespace:Telemetry.ViewModel"
+        xmlns:uc="clr-namespace:Telemetry.UserControls"
+        xmlns:cc="clr-namespace:Telemetry.ContentControls"
+        xmlns:converter="clr-namespace:Telemetry.Converter"
+        xmlns:pages="clr-namespace:Telemetry.Pages"
+        
+        xmlns:lib="clr-namespace:SlickLibrary;assembly=SlickLibrary"
+        
+
+        
+        xmlns:ui="http://schemas.modernwpf.com/2019" 
+        ui:WindowHelper.UseModernWindowStyle="True"
+        
+        d:DataContext="{d:DesignInstance Type=vw:MainViewModel}"
+        
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--<uc:ChartDisplaysTest />-->
+
+
+        <lib:SidePanel Grid.RowSpan="2" Grid.ColumnSpan="3" Panel.ZIndex="10">
+            <StackPanel>
+                <lib:IconButton ButtonContent="Page1" Command="{Binding SwitchToPageZeroCommand}"/>
+                <lib:IconButton ButtonContent="Page2" Command="{Binding SwitchToPageOneCommand}"/>
+            </StackPanel>
+        </lib:SidePanel>
+
+        <Frame x:Name="MainFrame" Grid.Row="0" Grid.Column="1" NavigationUIVisibility="Hidden" Visibility="Hidden"/>
+
+        
+
+        <lvc:CartesianChart x:Name="TestChart" 
+                            Grid.Column="1" 
+                            ZoomMode="X"
+                            Series="{Binding AllLines}" />
+
+        <!--<ScrollViewer Grid.Row="1" Grid.Column="1">
+            <ItemsControl ItemsSource="{Binding AllStints}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <cc:SelectExpander  Header="test" Background="AliceBlue" LineSource="{Binding Lines}" CornerRadius="10"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>-->
+
+        <!--
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="64"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.ColumnSpan="2"  Padding="24,0,24,0" Background="Transparent" BorderThickness="0" HorizontalContentAlignment="Left" MinHeight="40" Style="{StaticResource MaterialDesignPaperButton}" Cursor="Hand" Content="{Binding Name}" Command="{Binding Select}"/>
+                <Canvas Grid.Column="1" Width="24" Height="24" Visibility="{Binding IsActive ,Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Path Stroke="Gray" StrokeThickness="2" StrokeLineJoin="Round" Data="M 4 12 L 10 18 L 20 6"/>
+                </Canvas>
+            </Grid>-->
+
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.ColumnSpan="2"  Padding="24,0,0,0" Background="Transparent" BorderThickness="0" HorizontalContentAlignment="Left" MinHeight="40" Style="{StaticResource MaterialDesignPaperButton}" Cursor="Hand" Content="UDP" Command="{Binding UDPButton}"/>
+                <Canvas Grid.Column="1" Width="24" Height="24" Visibility="{Binding IsActive ,Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Path Stroke="Gray" StrokeThickness="2" StrokeLineJoin="Round" Data="M 4 12 L 10 18 L 20 6"/>
+                </Canvas>
+            </Grid>
+            <Button Grid.Row="0" Grid.Column="1" Command="{Binding Refresh}" Content="Refresh"/>
+            <Button Grid.Row="1" Command="{Binding Save}" Content="Save"/>
+            <Button Grid.Column="1" Grid.Row="1" Command="{Binding Load}" Content="Load"/>
+        </Grid>
+    </Grid>
+</Window>
