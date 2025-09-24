@@ -22,12 +22,12 @@ using Telemetry.Data;
 using Telemetry.Pages;
 using Telemetry.Tools;
 using Telemetry.UserControls;
+using SlickLibrary;
 
 namespace Telemetry.ViewModel
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        CartesianChart MainChart { get; set; }
         public UDPReceiver UDPreceiver { get; set; } = new UDPReceiver();
         public StintData CurrentStint { get; set; } = new StintData();
         public ObservableCollection<LineSeries<ObservablePoint>> AllLines { get; } = [];
@@ -52,9 +52,8 @@ namespace Telemetry.ViewModel
         public Frame Frame { get; set; }
 
 
-        public MainViewModel(CartesianChart chart, Frame frame)
+        public MainViewModel(Frame frame)
         {
-            MainChart = chart;
             Frame = frame;
             foreach (var line in CurrentStint.Lines)
                 if (line.IsVisible)

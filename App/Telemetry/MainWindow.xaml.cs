@@ -1,5 +1,7 @@
-﻿using LiveChartsCore.Measure;
+﻿using LiveChartsCore;
+using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.WPF;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -34,6 +36,8 @@ namespace Telemetry
             InitializeComponent();
             JsonOptions.Register();
 
+            LiveCharts.UseGPU = true;
+
             string trackName = "testTrack";
             string carName = "testCar";
 
@@ -52,7 +56,7 @@ namespace Telemetry
             else
                 car = CarData.ReadFromFile(trackName, carName);
 
-            var vw = new MainViewModel(TestChart,MainFrame);
+            var vw = new MainViewModel(MainFrame);
 
             //track.Print();
             //car.Print();
@@ -69,7 +73,7 @@ namespace Telemetry
             //TestChart.Series = vw.Data[0].SpeedSeries;
             DataContext = vw;
             //TestChart.Series = vw.CurrentStint.TyreWearSeries;
-            TestChart.FindingStrategy = FindingStrategy.CompareOnlyXTakeClosest;
+            //TestChart.FindingStrategy = FindingStrategy.CompareOnlyXTakeClosest;
         }
 
     }

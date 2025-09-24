@@ -8,16 +8,36 @@
       
       xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
       
-      xmlns:viewmodel="clr-namespace:Telemetry.ViewModel" 
-      d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
+      
+      xmlns:cc="clr-namespace:Telemetry.ContentControls"
+      xmlns:lib="clr-namespace:SlickLibrary;assembly=SlickLibrary"
+      
+      xmlns:viewmodel="clr-namespace:Telemetry.ViewModel" xmlns:ScottPlot1="http://schemas.scottplot.net/2008/xaml/presentation"
+      d:DataContext="{d:DesignInstance Type=viewmodel:StintPageViewModel}"
       
       d:DesignHeight="450" d:DesignWidth="800"
       Title="StintPage">
+    <Page.DataContext>
+        <viewmodel:StintPageViewModel/>
+    </Page.DataContext>
 
-    <Grid>
-        <TabControl>
+    <Grid ClipToBounds="False">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="50"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+
+        <TabControl Grid.RowSpan="2" Visibility="Visible">
             <TabItem Header="Pedals" x:Name="PedalTab">
-                <lvc:CartesianChart Series="{Binding AllLines[0]}"/>
+                <lvc:CartesianChart ZoomMode="X" Series="{Binding Pedals}" TooltipPosition="Hidden" FindingStrategy="CompareOnlyX"/>
+            </TabItem>
+            <TabItem Header="TyreWear"  x:Name="WearTab">
+                <lvc:CartesianChart ZoomMode="X" Series="{Binding Wears}" TooltipPosition="Hidden" FindingStrategy="CompareOnlyX"/>
             </TabItem>
             <TabItem Header="Tyres" x:Name="TyresTab">
                 <Grid>
@@ -29,10 +49,10 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <lvc:CartesianChart Padding="2"  Series="{Binding AllLines[0]}" Grid.Row="0" Grid.Column="0"/>
-                    <lvc:CartesianChart Padding="2"  Series="{Binding AllLines[1]}" Grid.Row="0" Grid.Column="1"/>
-                    <lvc:CartesianChart Padding="2"  Series="{Binding AllLines[2]}" Grid.Row="1" Grid.Column="0"/>
-                    <lvc:CartesianChart Padding="2"  Series="{Binding AllLines[3]}" Grid.Row="1" Grid.Column="1"/>
+                    <lvc:CartesianChart ZoomMode="X" Padding="2"  Series="{Binding WheelFL}" Grid.Row="0" Grid.Column="0" XAxes="{Binding XAxis}"/>
+                    <lvc:CartesianChart ZoomMode="X" Padding="2"  Series="{Binding WheelFR}" Grid.Row="0" Grid.Column="1" XAxes="{Binding XAxis}"/>
+                    <lvc:CartesianChart ZoomMode="X" Padding="2"  Series="{Binding WheelRL}" Grid.Row="1" Grid.Column="0" XAxes="{Binding XAxis}"/>
+                    <lvc:CartesianChart ZoomMode="X" Padding="2"  Series="{Binding WheelRR}" Grid.Row="1" Grid.Column="1" XAxes="{Binding XAxis}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Wheels"  x:Name="WheelsTab">
@@ -45,12 +65,42 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <lvc:CartesianChart Padding="2"  Series="{Binding AllLines[0]}" Grid.Row="0" Grid.Column="0"/>
-                    <lvc:CartesianChart Padding="2"  Series="{Binding AllLines[1]}" Grid.Row="0" Grid.Column="1"/>
-                    <lvc:CartesianChart Padding="2"  Series="{Binding AllLines[2]}" Grid.Row="1" Grid.Column="0"/>
-                    <lvc:CartesianChart Padding="2"  Series="{Binding AllLines[3]}" Grid.Row="1" Grid.Column="1"/>
+                    <lvc:CartesianChart ZoomMode="X" Padding="2"  Series="{Binding WheelFL}" Grid.Row="0" Grid.Column="0" XAxes="{Binding XAxis}"/>
+                    <lvc:CartesianChart ZoomMode="X" Padding="2"  Series="{Binding WheelFR}" Grid.Row="0" Grid.Column="1" XAxes="{Binding XAxis}"/>
+                    <lvc:CartesianChart ZoomMode="X" Padding="2"  Series="{Binding WheelRL}" Grid.Row="1" Grid.Column="0" XAxes="{Binding XAxis}"/>
+                    <lvc:CartesianChart ZoomMode="X" Padding="2"  Series="{Binding WheelRR}" Grid.Row="1" Grid.Column="1" XAxes="{Binding XAxis}"/>
                 </Grid>
             </TabItem>
         </TabControl>
+        <lib:SidePanel Grid.Column="1" FromRight="True" Grid.RowSpan="2" Grid.ColumnSpan="3" Panel.ZIndex="10" ExpandWidth="400">
+            <StackPanel>
+                <Grid>
+                    <Canvas Margin="13,13,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"
+                            Grid.Column="0"
+                            Width="24"
+                            Height="24" Panel.ZIndex="1">
+                        <Path Stroke="Gray"
+                              StrokeThickness="2"
+                              StrokeLineJoin="Round"
+                              Data="M 4 12 L 10 18 L 20 6"/>
+                    </Canvas>
+                    <cc:SelectExpander BorderBrush="Black" Margin="50,0,0,0" Header="Hopefully this will work.">
+                        <lib:IconButton Command="{Binding Test}"/>
+                    </cc:SelectExpander>
+                </Grid>
+                <Grid>
+                    <Canvas Margin="13,13,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"
+                            Grid.Column="0"
+                            Width="24"
+                            Height="24" Panel.ZIndex="1">
+                        <Path Stroke="Gray"
+                              StrokeThickness="2"
+                              StrokeLineJoin="Round"
+                              Data="M 4 12 L 10 18 L 20 6"/>
+                    </Canvas>
+                    <cc:SelectExpander BorderBrush="Black" Margin="50,0,0,0" Header="Hopefully this will work."/>
+                </Grid>
+            </StackPanel>
+        </lib:SidePanel>
     </Grid>
 </Page>
