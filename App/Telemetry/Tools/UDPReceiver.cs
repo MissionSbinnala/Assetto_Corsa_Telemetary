@@ -19,12 +19,6 @@ namespace Telemetry.Tools
 
         public void Start(int port)
         {
-            /*UdpClient sender = new UdpClient();
-            var data = Encoding.UTF8.GetBytes("Hello Python");
-            sender.Send(data, data.Length, "127.0.0.1", port);*/
-            //Sending Request to Python UDP Server to request for data
-
-
             client = new UdpClient(port);
             running = true;
             thread = new Thread(ReceiveLoop) { IsBackground = true };

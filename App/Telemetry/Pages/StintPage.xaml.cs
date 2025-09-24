@@ -1,5 +1,4 @@
-﻿using SlickLibrary;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +24,12 @@ namespace Telemetry.Pages
         public StintPage()
         {
             InitializeComponent();
-
+            this.Loaded += (s, e) =>
+            {
+                var win = Window.GetWindow(this);
+                //if (win?.DataContext is MainViewModel vm)
+                  //  this.DataContext = vm.SubViewModel;
+            };
         }
     }
 }

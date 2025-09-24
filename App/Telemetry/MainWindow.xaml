@@ -19,13 +19,19 @@
         
         xmlns:lib="clr-namespace:SlickLibrary;assembly=SlickLibrary"
         
+
+        
+        xmlns:ui="http://schemas.modernwpf.com/2019" 
+        ui:WindowHelper.UseModernWindowStyle="True"
+        
         d:DataContext="{d:DesignInstance Type=vw:MainViewModel}"
         
         Title="MainWindow" Height="450" Width="800">
-    <Grid ClipToBounds="False">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!--<uc:ChartDisplaysTest />-->
@@ -38,10 +44,59 @@
             </StackPanel>
         </lib:SidePanel>
 
-        <Frame Source="{Binding DataContext,ElementName=MW}" x:Name="MainFrame" Grid.Row="0" Grid.Column="1" NavigationUIVisibility="Hidden" Visibility="Visible"/>
+        <Frame x:Name="MainFrame" Grid.Row="0" Grid.Column="1" NavigationUIVisibility="Hidden" Visibility="Hidden"/>
 
         
 
-        
+        <lvc:CartesianChart x:Name="TestChart" 
+                            Grid.Column="1" 
+                            ZoomMode="X"
+                            Series="{Binding AllLines}" />
+
+        <!--<ScrollViewer Grid.Row="1" Grid.Column="1">
+            <ItemsControl ItemsSource="{Binding AllStints}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <cc:SelectExpander  Header="test" Background="AliceBlue" LineSource="{Binding Lines}" CornerRadius="10"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>-->
+
+        <!--
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="64"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.ColumnSpan="2"  Padding="24,0,24,0" Background="Transparent" BorderThickness="0" HorizontalContentAlignment="Left" MinHeight="40" Style="{StaticResource MaterialDesignPaperButton}" Cursor="Hand" Content="{Binding Name}" Command="{Binding Select}"/>
+                <Canvas Grid.Column="1" Width="24" Height="24" Visibility="{Binding IsActive ,Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Path Stroke="Gray" StrokeThickness="2" StrokeLineJoin="Round" Data="M 4 12 L 10 18 L 20 6"/>
+                </Canvas>
+            </Grid>-->
+
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.ColumnSpan="2"  Padding="24,0,0,0" Background="Transparent" BorderThickness="0" HorizontalContentAlignment="Left" MinHeight="40" Style="{StaticResource MaterialDesignPaperButton}" Cursor="Hand" Content="UDP" Command="{Binding UDPButton}"/>
+                <Canvas Grid.Column="1" Width="24" Height="24" Visibility="{Binding IsActive ,Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Path Stroke="Gray" StrokeThickness="2" StrokeLineJoin="Round" Data="M 4 12 L 10 18 L 20 6"/>
+                </Canvas>
+            </Grid>
+            <Button Grid.Row="0" Grid.Column="1" Command="{Binding Refresh}" Content="Refresh"/>
+            <Button Grid.Row="1" Command="{Binding Save}" Content="Save"/>
+            <Button Grid.Column="1" Grid.Row="1" Command="{Binding Load}" Content="Load"/>
+        </Grid>
     </Grid>
 </Window>

@@ -41,10 +41,32 @@ namespace Telemetry.Data
         }
         public ObservableCollection<LapData> Laps { get; } = [];
         public ObservableCollection<LineSeries<ObservablePoint>> Lines { get; private set; } = [];
-
-        public List<double> Position { get; } = [];
-        public List<double> Throttle { get; } = [];
-        public List<double> Brake { get; } = [];
+        public ObservableCollection<LineSeries<ObservablePoint>> SpeedSeries => new ObservableCollection<LineSeries<ObservablePoint>>
+        {
+            new LineSeries<ObservablePoint>
+            {
+                Name = "Speed",
+                Values = Laps
+                    .SelectMany(lap => lap.Points
+                        .Select(p => new ObservablePoint(p.Position, p.Speed)))
+                    .ToList(),
+                GeometrySize = 0, // 可选：不显示点，只显示线
+                LineSmoothness = 0,
+            }
+        };
+        public ObservableCollection<LineSeries<ObservablePoint>> TyreWearSeries => new ObservableCollection<LineSeries<ObservablePoint>>
+        {
+            new LineSeries<ObservablePoint>
+            {
+                Name = "TyreWearFL",
+                Values = Laps
+                    .SelectMany(lap => lap.Points
+                        .Select(p => new ObservablePoint(p.Position, p.TyreGrip[0])))
+                    .ToList(),
+                GeometrySize = 0, // 可选：不显示点，只显示线
+                LineSmoothness = 0,
+            }
+        };
 
         #region PropertyInfo
         private bool _isVisible = false;
@@ -65,9 +87,9 @@ namespace Telemetry.Data
                 }
                 Lines.Add(GetNewLine(name));
             }
-            //foreach (var line in Lines)
-            //    if (line.Name?.Length < 8 || line.Name?.Substring(0, 8) is not "TyreGrip")
-            //        line.IsVisible = false;
+            foreach (var line in Lines)
+                if (line.Name?.Length < 8 || line.Name?.Substring(0, 8) is not "TyreGrip")
+                    line.IsVisible = false;
         }
         public StintData(StreamReader stream)
         {
@@ -104,21 +126,9 @@ namespace Telemetry.Data
                         .ToList(),
                         GeometrySize = 0,
                         LineSmoothness = 0,
-                        IsVisible = true,
-                        AnimationsSpeed = TimeSpan.Zero,
-                        //ScalesYAt = axis.Axis,
+                        IsVisible = false,
+                        ScalesYAt = axis.Axis,
                     });
-                if (name == "Throttle")
-                {
-                    Position=Laps.SelectMany(lap => lap.Points.Select(p => (double)p.Position)).ToList();
-                    Throttle=Laps.SelectMany(lap => lap.Points.Select(p => (double)(Convert.ToSingle(prop.GetValue(p))))).ToList();
-                }
-                if (name == "Brake")
-                {
-                    Position=Laps.SelectMany(lap => lap.Points.Select(p => (double)p.Position)).ToList();
-                    Brake=Laps.SelectMany(lap => lap.Points.Select(p => (double)(Convert.ToSingle(prop.GetValue(p))))).ToList();
-                }
-
             }
         }
 
@@ -133,9 +143,8 @@ namespace Telemetry.Data
                 .ToList(),
                 GeometrySize = 0,
                 LineSmoothness = 0,
-                IsVisible = true,
-                AnimationsSpeed = TimeSpan.Zero,
-                //ScalesYAt = axis.Axis,
+                IsVisible = false,
+                ScalesYAt = axis.Axis,
             });
             Lines.Add(new LineSeries<ObservablePoint>
             {
@@ -146,9 +155,8 @@ namespace Telemetry.Data
                 .ToList(),
                 GeometrySize = 0,
                 LineSmoothness = 0,
-                IsVisible = true,
-                AnimationsSpeed = TimeSpan.Zero,
-                //ScalesYAt = axis.Axis,
+                IsVisible = false,
+                ScalesYAt = axis.Axis,
             });
             Lines.Add(new LineSeries<ObservablePoint>
             {
@@ -159,9 +167,8 @@ namespace Telemetry.Data
                 .ToList(),
                 GeometrySize = 0,
                 LineSmoothness = 0,
-                IsVisible = true,
-                AnimationsSpeed = TimeSpan.Zero,
-                //ScalesYAt = axis.Axis,
+                IsVisible = false,
+                ScalesYAt = axis.Axis,
             });
             Lines.Add(new LineSeries<ObservablePoint>
             {
@@ -172,9 +179,8 @@ namespace Telemetry.Data
                 .ToList(),
                 GeometrySize = 0,
                 LineSmoothness = 0,
-                IsVisible = true,
-                AnimationsSpeed = TimeSpan.Zero,
-                //ScalesYAt = axis.Axis,
+                IsVisible = false,
+                ScalesYAt = axis.Axis,
             });
         }
 

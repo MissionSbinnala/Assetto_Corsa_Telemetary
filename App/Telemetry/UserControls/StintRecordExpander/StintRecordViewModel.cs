@@ -10,7 +10,6 @@ using static System.Net.Mime.MediaTypeNames;
 using Telemetry.Tools;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using SlickLibrary;
 
 namespace Telemetry.UserControls
 {

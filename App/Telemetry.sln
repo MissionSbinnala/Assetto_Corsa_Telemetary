@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178
+VisualStudioVersion = 17.12.35707.178 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telemetry", "Telemetry\Telemetry.csproj", "{B54BC8F0-EAC2-445A-BED1-00EEF0002AC7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlickLibrary", "..\..\..\SSD\B22041619\C#\TelemeteryLibrary\SlickLibrary\SlickLibrary.csproj", "{4CD73657-91C7-990F-0B4C-A7C555625843}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{B54BC8F0-EAC2-445A-BED1-00EEF0002AC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B54BC8F0-EAC2-445A-BED1-00EEF0002AC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B54BC8F0-EAC2-445A-BED1-00EEF0002AC7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4CD73657-91C7-990F-0B4C-A7C555625843}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4CD73657-91C7-990F-0B4C-A7C555625843}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4CD73657-91C7-990F-0B4C-A7C555625843}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4CD73657-91C7-990F-0B4C-A7C555625843}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -49,7 +49,7 @@ namespace Telemetry.Data
             TrackName = trackName;
             CarName = carName;
             Lap = int.Parse((stream.ReadLine() ?? throw new Exception("Stint Ends Early!"))[4..].Trim(','));
-            LapTime = Double.Parse((stream.ReadLine() ?? throw new Exception("Stint Ends Early!"))[8..].Trim(','));
+            //LapTime = Double.Parse((stream.ReadLine() ?? throw new Exception("Stint Ends Early!"))[8..].Trim(','));
             Flags = byte.Parse((stream.ReadLine() ?? throw new Exception($"Stint Ends Early at Lap {Lap}!"))[6..].Trim(','));
             if ((stream.ReadLine() ?? throw new Exception($"Stint Ends Early at Lap {Lap}!")).Trim(',') is not "Points Start") throw new Exception("No Points Start!");
             while (true)
