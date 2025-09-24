@@ -12,6 +12,8 @@ using LiveChartsCore.SkiaSharpView;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Telemetry.Tools;
+using LiveChartsCore.Measure;
+using LiveChartsCore.Drawing;
 
 namespace Telemetry.ContentControls
 {
@@ -69,8 +71,6 @@ namespace Telemetry.ContentControls
 
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(SelectExpander), new PropertyMetadata(new CornerRadius(0)));
-
-
         // 你还可以定义其他属性，例如展现内容、命令等
     }
 

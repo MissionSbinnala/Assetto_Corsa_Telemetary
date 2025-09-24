@@ -38,7 +38,7 @@
                 </Canvas>
             </Grid>
 
-            <Button Margin="24, 12, 24, 12" Style="{ui:StaticResource ResourceKey=DefaultButtonStyle}" HorizontalAlignment="Stretch" Background="AliceBlue" MinHeight="40" Cursor="">Temp</Button>
+            <Button Margin="24, 12, 24, 12" HorizontalAlignment="Stretch" Background="AliceBlue" MinHeight="40" Cursor="">Temp</Button>
             <CheckBox Margin="24, 12, 24, 12" Style="{StaticResource MaterialDesignCheckBox}">I need to check</CheckBox>
 
 

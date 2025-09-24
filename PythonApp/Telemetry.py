@@ -28,6 +28,7 @@ except Exception as e:
 sock = None
 host = "127.0.0.1"
 port = 9999
+initialed=False
 
 
 tick = 0

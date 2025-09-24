@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Telemetry.Tools;
 using Telemetry.ViewModel;
+using SlickLibrary;
 
 namespace Telemetry.UserControls
 {

@@ -2,14 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:cc="clr-namespace:Telemetry.ContentControls"
                     xmlns:local="clr-namespace:Telemetry"
-                    xmlns:ui="http://schemas.modernwpf.com/2019"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:converter="clr-namespace:Telemetry.Converter"
                     >
     <ResourceDictionary.MergedDictionaries>
-        <ui:ThemeResources />
-        <ui:XamlControlsResources />
-
         <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="Cyan" SecondaryColor="Lime" />
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.LightBlue.xaml" />
@@ -24,9 +20,12 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type cc:SelectExpander}">
-                    <Border Margin="4,4,4,0" Padding="5" BorderThickness="5" CornerRadius="{TemplateBinding CornerRadius}" Background="{TemplateBinding Background}">
-                        <Expander Header="{TemplateBinding Header}" IsExpanded="True" Background="{TemplateBinding Background}">
-                        <StackPanel>
+                    <Border BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}" Background="{TemplateBinding Background}">
+                        <Expander materialDesign:ExpanderAssist.HorizontalHeaderPadding="0,12,24,12"
+                                  Header="{TemplateBinding Header}" 
+                                  Background="{TemplateBinding Background}"
+                                  IsExpanded="False">
+                            <StackPanel>
                             <Button Padding="24,0,24,0"
                                     Background="Transparent"
                                     BorderThickness="0"
@@ -37,7 +36,8 @@
                                     CommandParameter="{Binding}"
                                     Content="Select All"
                                     />
-                            <ItemsControl ItemsSource="{TemplateBinding LineSource}">
+                                <ContentPresenter/>
+                                <!--<ItemsControl ItemsSource="{TemplateBinding LineSource}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -71,7 +71,7 @@
                                         </Grid>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            </ItemsControl>-->
                         </StackPanel>
                     </Expander>
                     </Border>

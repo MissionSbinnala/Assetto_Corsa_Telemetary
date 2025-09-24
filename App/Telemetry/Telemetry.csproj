@@ -16,12 +16,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Exceptions\" />
+    <Compile Remove="Exceptions\**" />
+    <EmbeddedResource Remove="Exceptions\**" />
+    <None Remove="Exceptions\**" />
+    <Page Remove="Exceptions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Themes\" />
 	  <Folder Include="ContentControls\" />
 	  <Folder Include="Converter\" />
 	  <Folder Include="Data\" />
-	  <Folder Include="Tools\" />
 	  <Folder Include="UserControls\" />
   </ItemGroup>
 
@@ -29,12 +34,11 @@
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc5.4" />
     <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
     <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
-    <PackageReference Include="ModernWpfUI" Version="0.9.6" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="SlickLibrary">
-      <HintPath>SlickLibrary\SlickLibrary.dll</HintPath>
+      <HintPath>..\..\..\..\SSD\B22041619\C#\TelemeteryLibrary\SlickLibrary\bin\Debug\net8.0-windows\SlickLibrary.dll</HintPath>
     </Reference>
   </ItemGroup>
 
