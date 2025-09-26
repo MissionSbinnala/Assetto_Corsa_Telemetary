@@ -13,11 +13,10 @@
       xmlns:converter="clr-namespace:Telemetry.Converter"
 
       xmlns:lib="clr-namespace:SlickLibrary;assembly=SlickLibrary"
+      d:DataContext="{d:DesignInstance Type=vw:UDPViewModel}"
       
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="UDPPage"
-      
-      >
+      Title="UDPPage">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -26,7 +25,7 @@
         </Grid.ColumnDefinitions>
         <lvc:CartesianChart x:Name="TestChart" 
                     ZoomMode="X"
-                    Series="{Binding AllLines}" Visibility="Visible"/>
+                    Series="{Binding AllLines}" Visibility="Visible" TooltipPosition="Hidden" FindingStrategy="CompareOnlyX"/>
 
         <ScrollViewer Grid.Column="0" Visibility="Hidden">
             <ItemsControl ItemsSource="{Binding AllStints}">

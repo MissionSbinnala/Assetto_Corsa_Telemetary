@@ -25,7 +25,6 @@ namespace Telemetry.Pages
         public StintPage()
         {
             InitializeComponent();
-
         }
     }
 }

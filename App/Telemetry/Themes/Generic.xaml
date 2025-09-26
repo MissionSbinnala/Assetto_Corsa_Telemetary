@@ -15,7 +15,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    
+
     <Style TargetType="{x:Type cc:SelectExpander}">
         <Setter Property="Template">
             <Setter.Value>

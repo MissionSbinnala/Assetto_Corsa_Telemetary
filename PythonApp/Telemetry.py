@@ -10,6 +10,7 @@ import traceback
 import struct
 import idna.core
 import platform
+import time
 
 try:
     if platform.architecture()[0] == "64bit":
@@ -28,12 +29,12 @@ except Exception as e:
 sock = None
 host = "127.0.0.1"
 port = 9999
-initialed=False
+running = False
 
 
 tick = 0
 previous_distance = 0  # 初始化上一次的 distance
-last_step=0
+last_step = 0
 previous_lap = 0
 previous_lap_distance = 0
 previous_pitline = 0
@@ -46,8 +47,7 @@ def acMain(ac_version):
     ac.setSize(app_window, 200, 100)
 
     # 初始化 UDP socket
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.setblocking(False)  # 防止卡顿
+    socketInit(sock)
 
     return "TyreWear"
 
@@ -55,16 +55,65 @@ def acMain(ac_version):
 def acUpdate(deltaT):
     global sock, first, port, host
 
-    # 获取数据（举个例子：车速）
+    if not running:
+        ConnectionInit()
+        return
 
     check_pit()
     check_distance()
     check_lap()
+    # 获取数据（举个例子：车速）
 
 
-def socketInit(sock):
+def socketInit():
+    global sock, running, port,addr
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.bind(("127.0.0.1", port))
     sock.setblocking(False)  # 防止卡顿
+    string = "I've Received!"
+    # 接收数据和发送方地址
+    try:
+        time.sleep(1)
+        data, addr = sock.recvfrom(1024)  # 最大接收 1024 字节
+        print(f"从 {addr} 接收到数据: {data.decode()}")
+        sock.sendto(string.encode("utf-8"), addr)
+
+        data = "testTrack" + ";"
+        data += "1000" + ";"
+        data += "1000" + ";"
+
+        data += "testTrack" + ";" + "testCar"
+        sock.sendto(data.encode("utf-8"), addr)
+
+        running = True
+    except:
+        print("No data")
+
+
+
+def ConnectionInit():
+    global sock, running, port
+
+    string = "I've Received!"
+    # 接收数据和发送方地址
+    try:
+        time.sleep(1)
+        data, addr = sock.recvfrom(1024)  # 最大接收 1024 字节
+        print(f"从 {addr} 接收到数据: {data.decode()}")
+        sock.sendto(string.encode("utf-8"), addr)
+
+        # 构造TrackData
+        track = info.static.track + ";"
+        track += info.static.trackSPlineLength + ";"
+        track += "1000"
+        sock.sendto(track.encode("utf-8"), addr)
+
+        # 构造CarData
+
+        sock.sendto(string.encode("utf-8"), addr)
+        running = True
+    except:
+        print("No data")
 
 
 def check_port(host, port):
@@ -82,46 +131,89 @@ def check_port(host, port):
 
 def check_distance():
     global last_step
-    graphics=info.graphics
-    physics=info.physics
-    position=graphics.normalizedCarPosition
+    graphics = info.graphics
+    physics = info.physics
+    position = graphics.normalizedCarPosition
     # 假设 position 是从外部持续变化传入
     current_step = get_step(position)
 
     # 检查是否进入了新 step（包含 wrap-around 的情况）
     if current_step != last_step:
         # 判断是否真的“前进”了（考虑绕 0 的情况）
-        position=current_step/1000
-        if position%1==0:
-            lap=graphics.completedLaps+1
+        position = current_step / 1000
+        if position % 1 == 0:
+            lap = graphics.completedLaps + 1
         else:
-            lap=graphics.completedLaps
-        speed=physics.speedKmh
-        throttle=physics.gas
-        brake=physics.brake
-        clutch=physics.clutch
-        fuel=physics.fuel
-        gear=physics.gear
-        rpm=physics.rpms
-        steerAngle=physics.steerAngle
-        gX=physics.accG[0]
-        gY=physics.accG[1]
-        tyreGrip=physics.tyreWear
-        coreTemp=physics.tyreCoreTemperature
-        tyreTempI=physics.tyreTempI
-        tyreTempM=physics.tyreTempM
-        tyreTempO=physics.tyreTempO
-        angularSpeed=physics.wheelAngularSpeed
-        tyreLoad=physics.wheelLoad
-        surfaceGrip=graphics.surfaceGrip
-        drs=physics.drsEnabled
-        inPitLine=graphics.isInPitLane
-        valid=(physics.numberOfTyresOut<3)
-        flags=(int)((drs<<2)|(valid<<1)|inPitLine)
-        items=["Point",position,lap,speed,throttle,brake,clutch,fuel,gear,rpm,steerAngle,gX,gY,tyreGrip[0],tyreGrip[1],tyreGrip[2],tyreGrip[3],coreTemp[0],coreTemp[1],coreTemp[2],coreTemp[3],tyreTempI[0],tyreTempI[1],tyreTempI[2],tyreTempI[3],tyreTempM[0],tyreTempM[1],tyreTempM[2],tyreTempM[3],tyreTempO[0],tyreTempO[1],tyreTempO[2],tyreTempO[3],angularSpeed[0],angularSpeed[1],angularSpeed[2],angularSpeed[3],tyreLoad[0],tyreLoad[1],tyreLoad[2],tyreLoad[3],surfaceGrip,flags]
+            lap = graphics.completedLaps
+        speed = physics.speedKmh
+        throttle = physics.gas
+        brake = physics.brake
+        clutch = physics.clutch
+        fuel = physics.fuel
+        gear = physics.gear
+        rpm = physics.rpms
+        steerAngle = physics.steerAngle
+        gX = physics.accG[0]
+        gY = physics.accG[1]
+        tyreGrip = physics.tyreWear
+        coreTemp = physics.tyreCoreTemperature
+        tyreTempI = physics.tyreTempI
+        tyreTempM = physics.tyreTempM
+        tyreTempO = physics.tyreTempO
+        angularSpeed = physics.wheelAngularSpeed
+        tyreLoad = physics.wheelLoad
+        surfaceGrip = graphics.surfaceGrip
+        drs = physics.drsEnabled
+        inPitLine = graphics.isInPitLane
+        valid = physics.numberOfTyresOut < 3
+        flags = (int)((drs << 2) | (valid << 1) | inPitLine)
+        items = [
+            "Point",
+            position,
+            lap,
+            speed,
+            throttle,
+            brake,
+            clutch,
+            fuel,
+            gear,
+            rpm,
+            steerAngle,
+            gX,
+            gY,
+            tyreGrip[0],
+            tyreGrip[1],
+            tyreGrip[2],
+            tyreGrip[3],
+            coreTemp[0],
+            coreTemp[1],
+            coreTemp[2],
+            coreTemp[3],
+            tyreTempI[0],
+            tyreTempI[1],
+            tyreTempI[2],
+            tyreTempI[3],
+            tyreTempM[0],
+            tyreTempM[1],
+            tyreTempM[2],
+            tyreTempM[3],
+            tyreTempO[0],
+            tyreTempO[1],
+            tyreTempO[2],
+            tyreTempO[3],
+            angularSpeed[0],
+            angularSpeed[1],
+            angularSpeed[2],
+            angularSpeed[3],
+            tyreLoad[0],
+            tyreLoad[1],
+            tyreLoad[2],
+            tyreLoad[3],
+            surfaceGrip,
+            flags,
+        ]
         send_udp_data(build_csv(items))
-        last_step=current_step
-
+        last_step = current_step
 
     # global previous_distance
 
@@ -206,8 +298,10 @@ def send_udp_data(data):
     except Exception as e:
         ac.log(str(e))
 
+
 def get_step(pos):
     return int(round(pos % 1 * 1000)) % 1000
+
 
 def build_csv(values):
     return ",".join(str(v) for v in values)

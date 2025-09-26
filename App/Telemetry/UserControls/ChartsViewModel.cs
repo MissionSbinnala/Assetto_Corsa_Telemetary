@@ -16,7 +16,7 @@ using SlickLibrary;
 
 namespace Telemetry.UserControls
 {
-    public class ChartsViewModel : INotifyPropertyChanged
+    /*public class ChartsViewModel : INotifyPropertyChanged
     {
         public MainViewModel MainModel { get; set; }
         public int _index = 0;
@@ -80,5 +80,5 @@ namespace Telemetry.UserControls
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-    }
+    }*/
 }

@@ -43,14 +43,14 @@ namespace Telemetry
 
             if (!(Directory.Exists($"./Data/{trackName}") && File.Exists($"./Data/{trackName}/TrackData.json")))
             {
-                track = new TrackData("testTrack", 1000, 1000, 0.001);
+                track = new TrackData("testTrack", 1000, 1000);
                 track.SaveToFile();
             }
             else
                 track = TrackData.ReadFromFile(trackName);
             if (!(Directory.Exists($"./Data/{trackName}/{carName}") && File.Exists($"./Data/{trackName}/{carName}/CarData.json")))
             {
-                car = new CarData("testTrack", "testCar", "test");
+                car = new CarData("testTrack", "testCar");
                 car.SaveToFile();
             }
             else

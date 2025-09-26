@@ -15,18 +15,15 @@ namespace Telemetry.Data
     {
         public string TrackName { get; set; } = "";
         public string CarName { get; set; } = "";
-        public string Temp { get; set; } = "";
         [JsonConverter(typeof(TupleListConverter))]
         public List<(double, double)> TyreCurves { get; set; }= [];
         public CarData() { }
 
-        public CarData(string trackName, string carName, string t)
+        public CarData(string trackName, string carName)
         {
             TrackName = trackName;
             CarName = carName;
             TyreCurves = [(1.2, 1.2), (1.2, 1.2), (1.2, 1.2)];
-            Temp = t;
-
         }
         public bool SaveToFile()
         {

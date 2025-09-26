@@ -28,20 +28,14 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <!--<uc:ChartDisplaysTest />-->
-
-
-        <lib:SidePanel Grid.RowSpan="2" Grid.ColumnSpan="3" Panel.ZIndex="10">
+        <lib:SidePanel Grid.RowSpan="2" Grid.ColumnSpan="3" Panel.ZIndex="10" InWindow="{Binding ElementName=MW}">
             <StackPanel>
-                <lib:IconButton ButtonContent="Page1" Command="{Binding SwitchToPageZeroCommand}"/>
-                <lib:IconButton ButtonContent="Page2" Command="{Binding SwitchToPageOneCommand}"/>
+                <lib:IconButton ButtonContent="StintRecord" Command="{Binding SwitchToPageZeroCommand}"/>
+                <lib:IconButton ButtonContent="Current" Command="{Binding SwitchToPageOneCommand}"/>
             </StackPanel>
         </lib:SidePanel>
 
         <Frame Source="{Binding DataContext,ElementName=MW}" x:Name="MainFrame" Grid.Row="0" Grid.Column="1" NavigationUIVisibility="Hidden" Visibility="Visible"/>
 
-        
-
-        
     </Grid>
 </Window>

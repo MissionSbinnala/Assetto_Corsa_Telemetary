@@ -110,13 +110,13 @@ namespace Telemetry.Data
                     });
                 if (name == "Throttle")
                 {
-                    Position=Laps.SelectMany(lap => lap.Points.Select(p => (double)p.Position)).ToList();
-                    Throttle=Laps.SelectMany(lap => lap.Points.Select(p => (double)(Convert.ToSingle(prop.GetValue(p))))).ToList();
+                    Position = Laps.SelectMany(lap => lap.Points.Select(p => (double)p.Position)).ToList();
+                    Throttle = Laps.SelectMany(lap => lap.Points.Select(p => (double)(Convert.ToSingle(prop.GetValue(p))))).ToList();
                 }
                 if (name == "Brake")
                 {
-                    Position=Laps.SelectMany(lap => lap.Points.Select(p => (double)p.Position)).ToList();
-                    Brake=Laps.SelectMany(lap => lap.Points.Select(p => (double)(Convert.ToSingle(prop.GetValue(p))))).ToList();
+                    Position = Laps.SelectMany(lap => lap.Points.Select(p => (double)p.Position)).ToList();
+                    Brake = Laps.SelectMany(lap => lap.Points.Select(p => (double)(Convert.ToSingle(prop.GetValue(p))))).ToList();
                 }
 
             }
@@ -180,7 +180,8 @@ namespace Telemetry.Data
 
         public override string ToString()
         {
-            StartLap = Laps[0].Lap;
+            if (Laps.Count == 0) StartLap = 0;
+            else StartLap = Laps[0].Lap;
             TotalLaps = Laps.Count;
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Stint Starts");

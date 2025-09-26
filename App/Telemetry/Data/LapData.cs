@@ -13,7 +13,7 @@ namespace Telemetry.Data
     public class LapData : INotifyPropertyChanged
     {
         public ObservableCollection<DataPoint> Points { get; set; } = [];
-        public int Lap { get; set; }
+        public int Lap { get; set; } = 0;
         public double LapTime { get; set; }
         public string TrackName { get; set; } = "";
         public string CarName { get; set; } = "";

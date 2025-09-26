@@ -14,27 +14,65 @@ namespace Telemetry.Tools
         private UdpClient client;
         private Thread thread;
         private bool running = false;
+        IPEndPoint remoteEP;
+        public event Action<string>? OnDataReceived;
+        public event Func<string, bool>? OnSessionReceived;
 
-        public event Action<string> OnDataReceived;
+
 
         public void Start(int port)
         {
-            /*UdpClient sender = new UdpClient();
-            var data = Encoding.UTF8.GetBytes("Hello Python");
-            sender.Send(data, data.Length, "127.0.0.1", port);*/
-            //Sending Request to Python UDP Server to request for data
-
-
-            client = new UdpClient(port);
-            running = true;
-            thread = new Thread(ReceiveLoop) { IsBackground = true };
+            IPEndPoint remoteEP = new IPEndPoint(IPAddress.Parse("127.0.0.1"), port);
+            client = new UdpClient();
+            client.Connect(remoteEP);
+            thread = new Thread(UDPSession) { IsBackground = true };
             thread.Start();
+        }
+
+        private void UDPSession()
+        {
+            Waiting();
+            ReceiveSessionData();
+            ReceiveLoop();
+        }
+
+        private void ReceiveSessionData()
+        {
+            var sessionData = client.Receive(ref remoteEP);
+            running = OnSessionReceived?.Invoke(Encoding.UTF8.GetString(sessionData)) ?? false;
+        }
+
+        private void Waiting()
+        {
+
+            while (!running)
+            {
+                Debug.WriteLine("Waiting for start...");
+                Thread.Sleep(1000);
+                try
+                {
+                    client.Send(Encoding.UTF8.GetBytes("Can you see me?".ToArray()));
+                    var data = client.Receive(ref remoteEP);
+                    if (data.Length > 0 && Encoding.UTF8.GetString(data) is "I've Received!")
+                    {
+                        Debug.WriteLine(Encoding.UTF8.GetString(data));
+                        running = true;
+                    }
+                }
+                catch (SocketException se)
+                {
+                    if (se.SocketErrorCode != SocketError.ConnectionReset)
+                        Debug.WriteLine("Socket Error: " + se.Message);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("UDP Error: " + ex.Message);
+                }
+            }
         }
 
         private void ReceiveLoop()
         {
-            IPEndPoint remoteEP = new IPEndPoint(IPAddress.Any, 0);
-
             while (running)
             {
                 try

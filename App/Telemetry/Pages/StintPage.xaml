@@ -11,15 +11,18 @@
       
       xmlns:cc="clr-namespace:Telemetry.ContentControls"
       xmlns:lib="clr-namespace:SlickLibrary;assembly=SlickLibrary"
+      xmlns:converter="clr-namespace:Telemetry.Converter"
+      xmlns:uc="clr-namespace:Telemetry.UserControls"
       
       xmlns:viewmodel="clr-namespace:Telemetry.ViewModel" xmlns:ScottPlot1="http://schemas.scottplot.net/2008/xaml/presentation"
       d:DataContext="{d:DesignInstance Type=viewmodel:StintPageViewModel}"
       
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="800" x:Name="page"
       Title="StintPage">
-    <Page.DataContext>
-        <viewmodel:StintPageViewModel/>
-    </Page.DataContext>
+
+    <Page.Resources>
+        <converter:CalcConverter x:Key="Calc"/>
+    </Page.Resources>
 
     <Grid ClipToBounds="False">
         <Grid.ColumnDefinitions>
@@ -72,35 +75,71 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <lib:SidePanel Grid.Column="1" FromRight="True" Grid.RowSpan="2" Grid.ColumnSpan="3" Panel.ZIndex="10" ExpandWidth="400">
-            <StackPanel>
-                <Grid>
-                    <Canvas Margin="13,13,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"
-                            Grid.Column="0"
-                            Width="24"
-                            Height="24" Panel.ZIndex="1">
-                        <Path Stroke="Gray"
-                              StrokeThickness="2"
-                              StrokeLineJoin="Round"
-                              Data="M 4 12 L 10 18 L 20 6"/>
-                    </Canvas>
-                    <cc:SelectExpander BorderBrush="Black" Margin="50,0,0,0" Header="Hopefully this will work.">
-                        <lib:IconButton Command="{Binding Test}"/>
-                    </cc:SelectExpander>
-                </Grid>
-                <Grid>
-                    <Canvas Margin="13,13,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"
-                            Grid.Column="0"
-                            Width="24"
-                            Height="24" Panel.ZIndex="1">
-                        <Path Stroke="Gray"
-                              StrokeThickness="2"
-                              StrokeLineJoin="Round"
-                              Data="M 4 12 L 10 18 L 20 6"/>
-                    </Canvas>
-                    <cc:SelectExpander BorderBrush="Black" Margin="50,0,0,0" Header="Hopefully this will work."/>
-                </Grid>
-            </StackPanel>
+        <lib:SidePanel x:Name="StintSide" Grid.Column="1" FromRight="True" Grid.RowSpan="2" Grid.ColumnSpan="3" Panel.ZIndex="10" ExpandWidth="400">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" Height="{Binding ActualHeight,ElementName=page,Converter={StaticResource Calc},ConverterParameter=-50}">
+                <StackPanel>
+                    <Grid>
+                        <Canvas Margin="13,13,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"
+                                    Grid.Column="0"
+                                    Width="24"
+                                    Height="24" Panel.ZIndex="1">
+                            <Path Stroke="Gray"
+                                      StrokeThickness="2"
+                                      StrokeLineJoin="Round"
+                                      Data="M 4 12 L 10 18 L 20 6"/>
+                        </Canvas>
+                        <cc:SelectExpander BorderBrush="Black" Margin="50,0,0,0" Header="Track">
+                            <ItemsControl ItemsSource="{Binding Tracks}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <lib:IconButton ButtonContent="{Binding DisplayName}" Command="{Binding DataContext.GetCar,ElementName=page}" CommandParameter="{Binding }"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </cc:SelectExpander>
+                    </Grid>
+                    <Grid>
+                        <Canvas Margin="13,13,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"
+                                    Grid.Column="0"
+                                    Width="24"
+                                    Height="24" Panel.ZIndex="1">
+                            <Path Stroke="Gray"
+                                      StrokeThickness="2"
+                                      StrokeLineJoin="Round"
+                                      Data="M 4 12 L 10 18 L 20 6"/>
+                        </Canvas>
+                        <cc:SelectExpander BorderBrush="Black" Margin="50,0,0,0" Header="Car">
+                            <ItemsControl ItemsSource="{Binding Cars}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <lib:IconButton ButtonContent="{Binding DisplayName}" Command="{Binding DataContext.GetStint,ElementName=page}" CommandParameter="{Binding }"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </cc:SelectExpander>
+                    </Grid>
+                    <Grid>
+                        <Canvas Margin="13,13,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"
+                                    Grid.Column="0"
+                                    Width="24"
+                                    Height="24" Panel.ZIndex="1">
+                            <Path Stroke="Gray"
+                                      StrokeThickness="2"
+                                      StrokeLineJoin="Round"
+                                      Data="M 4 12 L 10 18 L 20 6"/>
+                        </Canvas>
+                        <cc:SelectExpander BorderBrush="Black" Margin="50,0,0,0" Header="Stint">
+                            <ItemsControl ItemsSource="{Binding Stints}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <lib:IconButton ButtonContent="{Binding DisplayName}" Command="{Binding DataContext.LoadStint,ElementName=page}" CommandParameter="{Binding }"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </cc:SelectExpander>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
         </lib:SidePanel>
     </Grid>
 </Page>
